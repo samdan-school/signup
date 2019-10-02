@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Lab4</string>
+
+    <!-- layout names -->
+    <string name="user_activity">User activity</string>
+    <string name="sing_up_activity">Sign up activity</string>
+
+    <!-- field names -->
+    <string name="name">Name</string>
+    <string name="re_pass">Re password</string>
+    <string name="old_pass">Old password</string>
+    <string name="new_pass">New password</string>
+    <string name="re_new_pass">Re new password</string>
+    <string name="pass">Password</string>
+    <string name="age">Age</string>
+    <string name="sex">Sex</string>
+    <string name="phone_num">Phone number</string>
+    <string name="dob">Date of birth</string>
+
+
+    <!-- Button names -->
+    <string name="update">Update</string>
+    <string name="save">Save</string>
+    <string name="change_pass">Change password</string>
+    <string name="back">Back</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+</resources>
