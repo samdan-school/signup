@@ -27,4 +27,17 @@ public class User {
 
     @ColumnInfo(name = "dob")
     public Date  dob;
+
+    public User() {
+
+    }
+
+    public User(String name, String password, int age, String sex, int phoneNumber, Date dob) {
+        this.name = name;
+        this.password = password;
+        this.age = age;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
+        this.dob = dob;
+    }
 }

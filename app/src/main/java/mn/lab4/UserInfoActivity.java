@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import mn.lab4.db.User;
 
@@ -20,6 +21,7 @@ public class UserInfoActivity extends Helper {
     private EditText etSex;
     private EditText etPhoneNumber;
     private DatePicker dpDob;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,16 @@ public class UserInfoActivity extends Helper {
 
         switch (view.getId()) {
             case R.id.btnUpdate:
-                // TODO update user
-                break;
+                User newUser = user;
+                newUser.age = Integer.parseInt(getStringEditText(etAge));
+                newUser.sex = getStringEditText(etSex);
+                newUser.phoneNumber = Integer.parseInt(getStringEditText(etPhoneNumber));
+                newUser.dob = new GregorianCalendar(
+                        dpDob.getYear(),
+                        dpDob.getMonth(),
+                        dpDob.getDayOfMonth()).getTime();
+                new UpdateTask().execute(newUser);
+                return;
             case R.id.btnChangePass:
                 intent.setClass(this, ChangePasswordActivity.class);
                 break;
@@ -54,11 +64,46 @@ public class UserInfoActivity extends Helper {
         startActivity(intent);
     }
 
+    @Override
+    protected void initialize() {
+        setContentView(R.layout.user_info);
+
+        tvName = findViewById(R.id.tvName);
+        etAge = findViewById(R.id.etAge);
+        etSex = findViewById(R.id.etSex);
+        etPhoneNumber = findViewById(R.id.etPhoneNum);
+        dpDob = findViewById(R.id.dpDob);
+
+        (findViewById(R.id.btnUpdate)).setOnClickListener(this);
+        (findViewById(R.id.btnChangePass)).setOnClickListener(this);
+        (findViewById(R.id.btnBack)).setOnClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        goHome();
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class FindTask extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... strings) {
             return db.userDao().findByName(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            progress(user);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class UpdateTask extends AsyncTask<User, Void, User> {
+        @Override
+        protected User doInBackground(User... users) {
+            db.userDao().updateUser(users[0]);
+            return users[0];
         }
 
         @Override
@@ -79,15 +124,12 @@ public class UserInfoActivity extends Helper {
             return;
         }
 
+        if (this.user == null) {
+            this.user = user;
+            initialize();
+        }
+
         setDefaults(PREF_USERNAME, user.name);
-
-        setContentView(R.layout.user_info);
-
-        tvName = findViewById(R.id.tvName);
-        etAge = findViewById(R.id.etAge);
-        etSex = findViewById(R.id.etSex);
-        etPhoneNumber = findViewById(R.id.etPhoneNum);
-        dpDob = findViewById(R.id.dpDob);
 
         tvName.setText(user.name);
         etAge.setText(user.age + "");
@@ -102,14 +144,5 @@ public class UserInfoActivity extends Helper {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         dpDob.updateDate(year, month, day);
-
-        (findViewById(R.id.btnUpdate)).setOnClickListener(this);
-        (findViewById(R.id.btnChangePass)).setOnClickListener(this);
-        (findViewById(R.id.btnBack)).setOnClickListener(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        goHome();
     }
 }

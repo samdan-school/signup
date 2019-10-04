@@ -70,4 +70,7 @@ abstract class Helper extends AppCompatActivity implements View.OnClickListener 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return preferences.getString(key, null);
     }
+
+    protected void initialize() {
+    }
 }
