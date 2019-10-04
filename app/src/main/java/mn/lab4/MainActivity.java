@@ -23,7 +23,8 @@ public class MainActivity extends Helper {
 
     @Override
     public void onClick(View view) {
-        if (editTextIsEmpty(etName) && editTextIsEmpty(etPassword)) {
+        if (editTextIsEmpty(etName) || editTextIsEmpty(etPassword)) {
+            showToast("All fields should be filled!");
             return;
         }
 

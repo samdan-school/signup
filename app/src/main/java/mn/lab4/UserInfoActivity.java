@@ -95,8 +95,7 @@ public class UserInfoActivity extends Helper {
         @Override
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
-            progress(user);
-            showToast("Login success!");
+            progress(user, "Login success!");
         }
     }
 
@@ -111,19 +110,20 @@ public class UserInfoActivity extends Helper {
         @Override
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
-            progress(user);
-            showToast("Update success!");
+            progress(user, "Update success!");
         }
     }
 
-    private void progress(User user) {
+    private void progress(User user, String text) {
         if (user == null) {
             onBackPressed();
+            showToast("Something went wrong!");
             return;
         }
 
         if (!user.password.equals(getExtraIntent(PASSWORD))) {
             onBackPressed();
+            showToast("Password is incorrect!");
             return;
         }
 
@@ -148,5 +148,6 @@ public class UserInfoActivity extends Helper {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         dpDob.updateDate(year, month, day);
+        showToast(text);
     }
 }

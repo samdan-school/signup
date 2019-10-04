@@ -29,6 +29,9 @@ public class SignUpActivity extends Helper {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new FindTask().execute(getExtraIntent(USERNAME));
+
         setContentView(R.layout.sign_up);
 
         tvName = findViewById(R.id.tvName);
@@ -92,6 +95,23 @@ public class SignUpActivity extends Helper {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class FindTask extends AsyncTask<String, Void, User> {
+        @Override
+        protected User doInBackground(String... strings) {
+            return db.userDao().findByName(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            if (user.name.equals(getExtraIntent(USERNAME))) {
+                showToast("Name is taken!");
+                onBackPressed();
+            }
+        }
+    }
+
     private void progress(User user) {
         showToast("Sign up success!");
 
@@ -99,5 +119,10 @@ public class SignUpActivity extends Helper {
         intent.putExtra(USERNAME, user.name);
         intent.putExtra(PASSWORD, user.password);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
