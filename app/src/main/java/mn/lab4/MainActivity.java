@@ -44,4 +44,17 @@ public class MainActivity extends Helper {
 
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String username = getDefaults(PREF_USERNAME);
+        if (username != null && username.trim().length() > 0) {
+            etName.setText(username);
+        }
+    }
 }

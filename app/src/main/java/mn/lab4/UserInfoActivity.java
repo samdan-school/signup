@@ -1,5 +1,6 @@
 package mn.lab4;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class UserInfoActivity extends Helper {
         startActivity(intent);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class FindTask extends AsyncTask<String, Void, User> {
         @Override
         protected User doInBackground(String... strings) {
@@ -77,7 +79,7 @@ public class UserInfoActivity extends Helper {
             return;
         }
 
-        Log.i("user info", "name " + user.name);
+        setDefaults(PREF_USERNAME, user.name);
 
         setContentView(R.layout.user_info);
 
@@ -104,5 +106,10 @@ public class UserInfoActivity extends Helper {
         (findViewById(R.id.btnUpdate)).setOnClickListener(this);
         (findViewById(R.id.btnChangePass)).setOnClickListener(this);
         (findViewById(R.id.btnBack)).setOnClickListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        goHome();
     }
 }
