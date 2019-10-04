@@ -17,6 +17,7 @@ abstract class Helper extends AppCompatActivity implements View.OnClickListener 
     static final String USERNAME = "USERNAME";
     static final String PASSWORD = "PASSWORD";
     static final String PREF_USERNAME = "PREF_USERNAME";
+    static final String PREF_PASSWORD = "PREF_PASSWORD";
 
     protected AppDatabase db;
 

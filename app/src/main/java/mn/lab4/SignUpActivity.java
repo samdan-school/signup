@@ -49,7 +49,7 @@ public class SignUpActivity extends Helper {
             onBackPressed();
             return;
         }
-        if ((editTextIsEmpty(etRePass) && editTextIsEmpty(etAge) && editTextIsEmpty(etSex) && editTextIsEmpty(etPhoneNumber))
+        if ((editTextIsEmpty(etRePass) || editTextIsEmpty(etAge) || editTextIsEmpty(etSex) || editTextIsEmpty(etPhoneNumber))
                 ||
                 !getExtraIntent(PASSWORD).equals(getStringEditText(etRePass))) {
             return;

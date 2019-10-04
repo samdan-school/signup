@@ -36,7 +36,7 @@ public class UserInfoActivity extends Helper {
             onBackPressed();
             return;
         }
-        if (editTextIsEmpty(etAge) && editTextIsEmpty(etSex) && editTextIsEmpty(etPhoneNumber)) {
+        if (editTextIsEmpty(etAge) || editTextIsEmpty(etSex) || editTextIsEmpty(etPhoneNumber)) {
             return;
         }
 
@@ -130,6 +130,7 @@ public class UserInfoActivity extends Helper {
         }
 
         setDefaults(PREF_USERNAME, user.name);
+        setDefaults(PREF_PASSWORD, user.password);
 
         tvName.setText(user.name);
         etAge.setText(user.age + "");

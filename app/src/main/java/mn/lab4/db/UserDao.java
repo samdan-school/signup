@@ -13,11 +13,14 @@ public interface UserDao {
     @Insert
     void insertUser(User user);
 
-    @Query("SELECT * FROM user WHERE name IN (:userName)")
+    @Query("SELECT * FROM user WHERE name IN (:userName);")
     User findByName(String userName);
 
     @Query("SELECT * FROM user")
     User[] loadAllUsers();
+
+    @Query("update user SET password = :password WHERE name = :name;")
+    void updatePassword(String name, String password);
 
     @Update
     void updateUser(User user);
