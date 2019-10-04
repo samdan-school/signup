@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -70,6 +71,10 @@ abstract class Helper extends AppCompatActivity implements View.OnClickListener 
     public String getDefaults(String key) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return preferences.getString(key, null);
+    }
+
+    public void showToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     protected void initialize() {

@@ -5,15 +5,14 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "mn.lab4"
-        minSdkVersion 26
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation":
-                                     "$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
     }

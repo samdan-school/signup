@@ -1,5 +1,6 @@
 package mn.lab4;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,49 +50,54 @@ public class SignUpActivity extends Helper {
             onBackPressed();
             return;
         }
-        if ((editTextIsEmpty(etRePass) || editTextIsEmpty(etAge) || editTextIsEmpty(etSex) || editTextIsEmpty(etPhoneNumber))
-                ||
-                !getExtraIntent(PASSWORD).equals(getStringEditText(etRePass))) {
+        if (!getExtraIntent(PASSWORD).equals(getStringEditText(etRePass))) {
+            showToast("Password incorrect!");
+            return;
+        }
+        if ((editTextIsEmpty(etRePass) || editTextIsEmpty(etAge) || editTextIsEmpty(etSex) || editTextIsEmpty(etPhoneNumber))) {
+            showToast("All fields should be filled!");
             return;
         }
 
-        switch (view.getId()) {
-            case R.id.btnSave:
-                // TODO Create user
-                User user = new User();
-                user.name = getExtraIntent(USERNAME);
-                user.password = getExtraIntent(PASSWORD);
-                user.age = Integer.parseInt(getStringEditText(etAge));
-                user.sex = getStringEditText(etSex);
-                user.phoneNumber = Integer.parseInt(getStringEditText(etPhoneNumber));
-                user.dob = new GregorianCalendar(
-                        dpDob.getYear(),
-                        dpDob.getMonth(),
-                        dpDob.getDayOfMonth()).getTime();
-                Log.i("Sign up", "user inside try");
-
-                try {
-
-                    Executor myExecutor = Executors.newCachedThreadPool();
-                    myExecutor.execute(() -> {
-                        db.userDao().insertUser(user);
-
-                        Intent intent = new Intent(this, UserInfoActivity.class);
-                        intent.putExtra(USERNAME, user.name);
-                        intent.putExtra(PASSWORD, user.password);
-
-                        startActivity(intent);
-                    });
-
-                    return;
-                } catch (Exception e) {
-                    Log.e("Sign up", e.toString());
-                    onBackPressed();
-                }
-
-                break;
-            default:
-                onBackPressed();
+        User user = new User();
+        user.name = getExtraIntent(USERNAME);
+        user.password = getExtraIntent(PASSWORD);
+        user.age = Integer.parseInt(getStringEditText(etAge));
+        user.sex = getStringEditText(etSex);
+        user.phoneNumber = Integer.parseInt(getStringEditText(etPhoneNumber));
+        user.dob = new GregorianCalendar(
+                dpDob.getYear(),
+                dpDob.getMonth(),
+                dpDob.getDayOfMonth()).getTime();
+        try {
+            new InsertTask().execute(user);
+        } catch (Exception e) {
+            Log.e("Sign up", e.toString());
+            onBackPressed();
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class InsertTask extends AsyncTask<User, Void, User> {
+        @Override
+        protected User doInBackground(User... users) {
+            db.userDao().insertUser(users[0]);
+            return users[0];
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            progress(user);
+        }
+    }
+
+    private void progress(User user) {
+        showToast("Sign up success!");
+
+        Intent intent = new Intent(this, UserInfoActivity.class);
+        intent.putExtra(USERNAME, user.name);
+        intent.putExtra(PASSWORD, user.password);
+        startActivity(intent);
     }
 }

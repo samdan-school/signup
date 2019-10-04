@@ -40,15 +40,16 @@ public class ChangePasswordActivity extends Helper {
             return;
         }
         if (editTextIsEmpty(etOldPass) || editTextIsEmpty(etNewPass) || editTextIsEmpty(etReNewPass)) {
+            showToast("All fields should be filled to update!");
             return;
         }
 
         if (!getDefaults(PREF_PASSWORD).equals(getStringEditText(etOldPass))) {
-            // TODO Old pass is wrong
+            showToast("Old password is incorrect!");
             return;
         }
         if (!getStringEditText(etNewPass).equals(getStringEditText(etReNewPass))) {
-            // TODO new pass is wrong
+            showToast("New password is incorrect!");
             return;
         }
 
@@ -65,5 +66,16 @@ public class ChangePasswordActivity extends Helper {
             db.userDao().updatePassword(strings[0], strings[1]);
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            showToast("Password update success!");
+        }
+    }
+
+    @Override
+    public void showToast(String text) {
+        super.showToast(text);
     }
 }

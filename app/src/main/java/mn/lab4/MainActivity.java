@@ -55,6 +55,7 @@ public class MainActivity extends Helper {
         String username = getDefaults(PREF_USERNAME);
         if (username != null && username.trim().length() > 0) {
             etName.setText(username);
+            showToast("Welcome back " + username + "!");
         }
     }
 }

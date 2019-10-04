@@ -37,6 +37,7 @@ public class UserInfoActivity extends Helper {
             return;
         }
         if (editTextIsEmpty(etAge) || editTextIsEmpty(etSex) || editTextIsEmpty(etPhoneNumber)) {
+            showToast("All fields should be filled to update!");
             return;
         }
 
@@ -95,6 +96,7 @@ public class UserInfoActivity extends Helper {
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
             progress(user);
+            showToast("Login success!");
         }
     }
 
@@ -110,6 +112,7 @@ public class UserInfoActivity extends Helper {
         protected void onPostExecute(User user) {
             super.onPostExecute(user);
             progress(user);
+            showToast("Update success!");
         }
     }
 
