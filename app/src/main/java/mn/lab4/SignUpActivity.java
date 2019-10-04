@@ -1,5 +1,6 @@
 package mn.lab4;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.GregorianCalendar;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import mn.lab4.db.User;
 
@@ -52,7 +57,6 @@ public class SignUpActivity extends Helper {
 
         switch (view.getId()) {
             case R.id.btnSave:
-                Log.i("Sign up", "user dsadasdasdasdasdasdasdasdasdasdas");
                 // TODO Create user
                 User user = new User();
                 user.name = getExtraIntent(USERNAME);
@@ -64,11 +68,25 @@ public class SignUpActivity extends Helper {
                         dpDob.getYear(),
                         dpDob.getMonth(),
                         dpDob.getDayOfMonth()).getTime();
+                Log.i("Sign up", "user inside try");
 
                 try {
-//                    user = .addUser(db, user);
+
+                    Executor myExecutor = Executors.newCachedThreadPool();
+                    myExecutor.execute(() -> {
+                        db.userDao().insertUser(user);
+
+                        Intent intent = new Intent(this, UserInfoActivity.class);
+                        intent.putExtra(USERNAME, user.name);
+                        intent.putExtra(PASSWORD, user.password);
+
+                        startActivity(intent);
+                    });
+
+                    return;
                 } catch (Exception e) {
                     Log.e("Sign up", e.toString());
+                    onBackPressed();
                 }
 
                 break;

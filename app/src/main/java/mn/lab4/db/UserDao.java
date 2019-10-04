@@ -11,11 +11,14 @@ import java.util.Date;
 @Dao
 public interface UserDao {
     @Insert
-    public abstract void insertUser(User user);
+    void insertUser(User user);
 
-    @Query("SELECT * FROM user WHERE name IN (:userName) LIMIT 1")
-    LiveData<User> findByName(String userName);
+    @Query("SELECT * FROM user WHERE name IN (:userName)")
+    User findByName(String userName);
+
+    @Query("SELECT * FROM user")
+    User[] loadAllUsers();
 
     @Update
-    void UpdateUser(String name, int age, String sex, int phoneNumber, Date dob);
+    void updateUser(User user);
 }
